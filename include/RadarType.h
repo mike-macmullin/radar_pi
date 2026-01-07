@@ -52,6 +52,10 @@
 #include "raymarine/RMQuantumControl.h"
 #include "raymarine/RMQuantumControlsDialog.h"
 #include "raymarine/RaymarineReceive.h"
+#include "asterix/Asterix240Control.h"
+#include "asterix/Asterix240ControlsDialog.h"
+#include "asterix/Asterix240Receive.h"
+#include "asterix/Asterix240Common.h"
 
 #endif /* _RADARTYPE_H_ */
 
@@ -96,6 +100,7 @@
 #include "navico/halobtype.h"
 #include "raymarine/RME120type.h"
 #include "raymarine/RMQuantumtype.h"
+#include "asterix/asterix240type.h"
 
 #undef DEFINE_RADAR // Prepare for next inclusion
 #undef INITIALIZE_RADAR

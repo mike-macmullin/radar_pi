@@ -140,6 +140,12 @@ set(SRC
   include/raymarine/RMQuantumControlsDialog.h
   include/raymarine/RMQuantumControl.h
   include/raymarine/RMQuantumControlSet.h
+  include/asterix/Asterix240Common.h
+  include/asterix/Asterix240Receive.h
+  include/asterix/Asterix240ControlsDialog.h
+  include/asterix/Asterix240Control.h
+  include/asterix/Asterix240ControlSet.h
+  include/asterix/asterix240type.h
 
   src/ControlsDialog.cpp
   src/GuardZone.cpp
@@ -183,6 +189,9 @@ set(SRC
   src/raymarine/RaymarineReceive.cpp
   src/raymarine/RaymarineLocate.cpp
   src/raymarine/RMQuantumControlsDialog.cpp
+  src/asterix/Asterix240Receive.cpp
+  src/asterix/Asterix240ControlsDialog.cpp
+  src/asterix/Asterix240Control.cpp
 )
 
 set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
@@ -201,6 +210,7 @@ macro(late_init)
     ${CMAKE_CURRENT_LIST_DIR}/include/garminxhd
     ${CMAKE_CURRENT_LIST_DIR}/include/navico
     ${CMAKE_CURRENT_LIST_DIR}/include/raymarine
+    ${CMAKE_CURRENT_LIST_DIR}/include/asterix
   )
 endmacro ()
 
