@@ -31,40 +31,38 @@ Vagrant.configure("2") do |config|
 
     # Ensure Temp folder exists
     if (-not (Test-Path "C:\\Temp")) {
-      New-Item -ItemType Directory -Path "C:\\Temp"
+      New-Item -ItemType Directory -Path "C:\\Temp" | Out-Null
     }
 
-    # Ensure py launcher exists
+    # Ensure Python launcher exists
     if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
-        Write-Error "Python launcher (py.exe) not found"
-        exit 1
+        Write-Host "Installing Python via Chocolatey..."
+        choco install -y python
+    } else {
+        Write-Host "Python already installed"
     }
 
     # Create shim directory
     $shimDir = "C:\\Tools\\shims"
     if (-not (Test-Path $shimDir)) {
-        New-Item -ItemType Directory -Path $shimDir | Out-Null
+      New-Item -ItemType Directory -Path $shimDir | Out-Null
     }
 
     # Create python.cmd shim that forwards to py
     $pythonShim = "$shimDir\\python.cmd"
-    @"
-    @echo off
-    py %*
-    "@ | Set-Content -Encoding ASCII $pythonShim
+    Set-Content -Path $pythonShim -Value "@echo off`npy %*" -Encoding ASCII
 
     # Add shim directory to SYSTEM PATH if missing
     $systemPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
     if ($systemPath -notlike "*$shimDir*") {
-        [Environment]::SetEnvironmentVariable(
-            "Path",
-            "$systemPath;$shimDir",
-            "Machine"
-        )
+      [Environment]::SetEnvironmentVariable(
+        "Path",
+        "$systemPath;$shimDir",
+        "Machine"
+      )
     }
 
-    Write-Host "python shim created successfully"
-
+    Write-Host "Python shim created successfully"
 
     # Download Visual Studio Build Tools if not already downloaded
     $vsInstallerPath = "C:\\Temp\\vs_buildtools.exe"
@@ -72,6 +70,7 @@ Vagrant.configure("2") do |config|
       Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_BuildTools.exe" -OutFile $vsInstallerPath
     }
 
+    # Install Visual Studio Build Tools silently
     Start-Process -FilePath $vsInstallerPath -ArgumentList `
         '--quiet', '--wait', '--norestart', '--nocache', `
         '--add Microsoft.VisualStudio.Workload.VCTools', `
@@ -80,4 +79,5 @@ Vagrant.configure("2") do |config|
         '--includeRecommended' `
         -Wait -NoNewWindow
   POWERSHELL
+
 end
